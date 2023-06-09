@@ -16,3 +16,30 @@ exports.getUsers = (req, res) => {
         console.log(`get users error ${err}`)
     })
 }
+
+exports.deleteUser = (req, res) => {
+    const id = req.params.id
+    userModel.findByIdAndDelete(id).then(() => {
+        res.redirect('/users')
+    }).catch(err => {
+        res.send(err)
+    })
+}
+
+exports.getUserById = (req, res) => {
+    const id = req.params.id
+    userModel.findById(id).lean().then(user => {
+        res.render('update-user', {title: 'Edit User', isUsers: true, 'user': user})
+    }).catch(err => {
+        res.send(err)
+    })
+}
+
+exports.updateUser = (req, res) => {
+    const id = req.params.id
+    userModel.findByIdAndUpdate(id, req.body).then(() => {
+        res.redirect('/users')
+    }).catch(err => {
+        res.send(err)
+    })
+}
